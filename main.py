@@ -3,9 +3,9 @@ import subprocess
 import json
 import shutil
 import time
-from threading import Thread
+from flask import Flask
 
-Working = True
+app = Flask(__name__)
 
 banner = '''
  ____   ____.______  ._______  .______       _____._.______  .___  ____   ____
@@ -24,18 +24,6 @@ banner = '''
 
 print(banner)
 
-def Loading():
-    white = 37
-    black = 0
-    while Working:
-        print("\r" + "░"*white + "▒▒"+ "▓"*black + "▒▒" + "░"*white, end="")
-        black = (black + 2) % 75
-        white = (white -1) if white != 0 else 37
-        time.sleep(2)
-
-_Thread = Thread(target=Loading, name="Prepare", args=())
-_Thread.start()
-
 API_ID = os.getenv("API_ID")
 API_HASH = os.getenv("API_HASH")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -46,8 +34,8 @@ if len(str(DUMP_ID)) == 10 and "-100" not in str(DUMP_ID):
     n_dump = "-100" + str(DUMP_ID)
     DUMP_ID = int(n_dump)
 
-if os.path.exists("/content/sample_data"):
-    shutil.rmtree("/content/sample_data")
+if os.path.exists("./sample_data"):
+    shutil.rmtree("./sample_data")
 
 cmd = "git clone https://github.com/XronTrix10/Telegram-Leecher && bash /content/Telegram-Leecher/setup.sh"
 proc = subprocess.run(cmd, shell=True)
@@ -64,14 +52,20 @@ credentials = {
     "DUMP_ID": DUMP_ID,
 }
 
-with open('/content/Telegram-Leecher/credentials.json', 'w') as file:
+with open('./credentials.json', 'w') as file:
     file.write(json.dumps(credentials))
 
-Working = False
-
-if os.path.exists("/content/Telegram-Leecher/my_bot.session"):
-    os.remove("/content/Telegram-Leecher/my_bot.session") # Remove previous bot session
+if os.path.exists("./my_bot.session"):
+    os.remove("./my_bot.session") # Remove previous bot session
     
-print("\rStarting Bot....")
+print("Starting Bot....")
 
-!cd /content/Telegram-Leecher/ && python3 -m colab_leecher #type:ignore
+# This route is just for Heroku to check if the app is running
+@app.route('/')
+def index():
+    return "Bot is running!"
+
+# Run the Flask app on the dynamically assigned port by Heroku
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
