@@ -1,14 +1,13 @@
-import logging
-import os
+import logging, os
 from pyrogram import filters
 from datetime import datetime
 from pyrogram.errors import BadRequest
 from asyncio import sleep, get_event_loop
 from colab_leecher import colab_bot, OWNER
-from colab_leecher.utility.task_manager import taskScheduler
+from .utility.task_manager import taskScheduler
 from colab_leecher.utility.handler import cancelTask
-from colab_leecher.utility.variables import BOT, MSG, BotTimes, Paths
-from colab_leecher.utility.helper import isLink, setThumbnail, message_deleter
+from .utility.variables import BOT, MSG, BotTimes, Paths
+from .utility.helper import isLink, setThumbnail, message_deleter
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 src_request_msg = None
@@ -49,11 +48,14 @@ async def settings(client, message):
 @colab_bot.on_message(filters.create(isLink) & ~filters.photo)
 async def handle_url(client, message):
     global BOT
+
     # Reset
     BOT.Options.custom_name = ""
     BOT.Options.zip_pswd = ""
     BOT.Options.unzip_pswd = ""
+
     temp_source = message.text.splitlines()
+
     # Check for arguments in message
     for _ in range(3):
         if temp_source[-1][0] == "[":
@@ -67,6 +69,7 @@ async def handle_url(client, message):
             temp_source.pop()
         else:
             break
+
     if BOT.State.started:
         BOT.SOURCE.extend(temp_source)
         keyboard = InlineKeyboardMarkup(
