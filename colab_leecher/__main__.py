@@ -1,14 +1,7 @@
-import logging, os
+import logging
 from pyrogram import filters
-from datetime import datetime
-from pyrogram.errors import BadRequest
-from asyncio import sleep, get_event_loop
-from colab_leecher import colab_bot, OWNER
-from .utility.task_manager import taskScheduler
-from colab_leecher.utility.handler import cancelTask
-from .utility.variables import BOT, MSG, BotTimes, Paths
-from .utility.helper import isLink, setThumbnail, message_deleter
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from colab_leecher import colab_bot, OWNER
 
 src_request_msg = None
 
@@ -117,4 +110,5 @@ async def help_command(client, message):
     # Function code remains the same
 
 logging.info("Colab Leecher Started !")
-colab_bot.run()
+if __name__ == "__main__":
+    colab_bot.run()
