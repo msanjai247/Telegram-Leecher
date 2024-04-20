@@ -6,7 +6,7 @@ from pyrogram.client import Client
 
 # Read the dictionary from the txt file
 
-with open("Telegram-Leecher/credentials.json", "r") as file:
+with open("/content/Telegram-Leecher/credentials.json", "r") as file:
     credentials = json.loads(file.read())
 
 
