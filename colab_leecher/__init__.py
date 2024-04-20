@@ -5,8 +5,10 @@ from uvloop import install
 from pyrogram.client import Client
 
 # Read the dictionary from the txt file
+
 with open("/content/Telegram-Leecher/credentials.json", "r") as file:
     credentials = json.loads(file.read())
+
 
 API_ID = credentials["API_ID"]
 API_HASH = credentials["API_HASH"]
