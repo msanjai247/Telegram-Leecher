@@ -52,7 +52,7 @@ credentials = {
     "DUMP_ID": DUMP_ID,
 }
 
-with open('/content/Telegram-Leecher/credentials.json', 'w') as file:
+with open('./credentials.json', 'w') as file:
     file.write(json.dumps(credentials))
 
 if os.path.exists("./my_bot.session"):
